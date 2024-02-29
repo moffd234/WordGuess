@@ -38,7 +38,7 @@ public class Hangman {
         int randomIndex = (int) (Math.random() * 4);
         // Converts the word at the randomIndex to a list of chars and stores it in hiddenWord
         this.hiddenWord = words[randomIndex].toCharArray();
-        System.out.println(hiddenWord);
+        System.out.println(this.hiddenWord);
     }
 
     private char[] makeDisplayArray(){
@@ -71,7 +71,6 @@ public class Hangman {
         // Returns true if answer == "yes"
         return answer.equalsIgnoreCase("yes");
 
-        // No else statement needed since the method would exit before this line
     }
 
     private void printCurrentState(){
@@ -81,7 +80,21 @@ public class Hangman {
         System.out.println(); // Prints a new line once done with the for loop
     };
 
-    private void process(){};
+    // loops through the word array, looking for the inputted guess, and
+    // replaces the "_" with the guesses char if found
+    private void process(char guess){
+        for(int i = 0; i < this.hiddenWord.length; i++){
+
+            // Check if guess == value at index
+            if(this.hiddenWord[i] == guess){
+                this.displayArray[i] = guess;
+            }
+            // If not remove a life
+            else{
+                this.lives -= 1;
+            }
+        }
+    };
     private void playerWon(){
         System.out.println("Congratulations, You Won!");
     };
