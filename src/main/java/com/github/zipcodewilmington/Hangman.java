@@ -14,12 +14,23 @@ public class Hangman {
     final private String[] words = new String[]{"cat", "dog", "bog", "cut"};
     private char[] hiddenWord;
     private char[] displayArray;
+    private int lives = 3;
     public Hangman(){}
 
     public void runGame(){
+        boolean game_on = true;
+
         initializeGameState();
+        announceGame();
         displayArray = this.makeDisplayArray();
-        printCurrentState();
+        while(game_on) {
+            printCurrentState();
+            char guess = getNextGuess();
+        }
+        if (!askToPlayAgain()) {
+            gameOver();
+        }
+
     }
 
     private void initializeGameState(){
@@ -49,14 +60,27 @@ public class Hangman {
     private void announceGame(){
         System.out.println("Let's Play Wordguess version 1.0");
     }
-    private void gameOver(){}
+    private void gameOver(){
+        System.out.println("Game Over.");
+    }
     private boolean isWordGuessed(){return false;}
-    private boolean askToPlayAgain(){return false;}
+    private boolean askToPlayAgain(){
+        System.out.println("Would you like to play again? (yes/no)");
+        Scanner inputScanner = new Scanner(System.in);
+        String answer = inputScanner.nextLine();
+        // Returns true if answer == "yes"
+        return answer.equalsIgnoreCase("yes");
+
+        // No else statement needed since the method would exit before this line
+    }
+
     private void printCurrentState(){
-        for(int i: displayArray){  // For each loop
-            System.out.print(displayArray[i]);
+        for(char i: displayArray){  // For each loop
+            System.out.print(i);
         }
+        System.out.println(); // Prints a new line once done with the for loop
     };
+
     private void process(){};
     private void playerWon(){
         System.out.println("Congratulations, You Won!");
