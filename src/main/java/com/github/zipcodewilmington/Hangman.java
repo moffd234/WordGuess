@@ -1,6 +1,9 @@
 package com.github.zipcodewilmington;
 
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 /**
  * @author xt0fer
  * @version 1.0.0
@@ -10,17 +13,45 @@ package com.github.zipcodewilmington;
 public class Hangman {
     final private String[] words = new String[]{"cat", "dog", "bog", "cut"};
     private char[] hiddenWord;
-    public Hangman(){
-        hiddenWord = makeHiddenWord();
+    private char[] displayArray;
+    public Hangman(){}
+
+    public void runGame(){
+        initializeGameState();
+        displayArray = this.makeDisplayArray();
     }
 
-    private char[] makeHiddenWord(){
+    private void initializeGameState(){
         // Generates a random number before 0 - 1 then multiplies it by 3 (the max index)
         int randomIndex = (int) (Math.random() * 4);
-        // Converts the word at the randomIndex to a list of chars and stores it in word
-        char[] word = words[randomIndex].toCharArray();
-        System.out.println(word);
-        return word;
+        // Converts the word at the randomIndex to a list of chars and stores it in hiddenWord
+        this.hiddenWord = words[randomIndex].toCharArray();
+        System.out.println(hiddenWord);
     }
+
+    private char[] makeDisplayArray(){
+        char[] guesses = new char[hiddenWord.length];
+        Arrays.fill(guesses, '_');
+        return guesses;
+    }
+
+    static char getNextGuess() { // Modified from the sumOfInput to take a char instead of an int
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter a single character: ");
+        char character = scan.nextLine().charAt(0); // Gets first character from the input
+                                                    // while also consuming the newLine character
+
+        scan.close();
+        return character;
+    }
+
+    private void announceGame(){}
+    private void gameOver(){}
+    private boolean isWordGuessed(){return false;}
+    private boolean askToPlayAgain(){return false;}
+    private void printCurrentState(){};
+    private void process(){};
+    private void playerWon(){};
+    private void playerLoss(){};
 
 }
