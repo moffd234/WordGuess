@@ -19,6 +19,7 @@ public class Hangman {
     public void runGame(){
         initializeGameState();
         displayArray = this.makeDisplayArray();
+        printCurrentState();
     }
 
     private void initializeGameState(){
@@ -45,13 +46,23 @@ public class Hangman {
         return character;
     }
 
-    private void announceGame(){}
+    private void announceGame(){
+        System.out.println("Let's Play Wordguess version 1.0");
+    }
     private void gameOver(){}
     private boolean isWordGuessed(){return false;}
     private boolean askToPlayAgain(){return false;}
-    private void printCurrentState(){};
+    private void printCurrentState(){
+        for(int i: displayArray){  // For each loop
+            System.out.print(displayArray[i]);
+        }
+    };
     private void process(){};
-    private void playerWon(){};
-    private void playerLoss(){};
+    private void playerWon(){
+        System.out.println("Congratulations, You Won!");
+    };
+    private void playerLoss(){
+        System.out.println("You Lost! You ran out of guesses.");
+    };
 
 }
