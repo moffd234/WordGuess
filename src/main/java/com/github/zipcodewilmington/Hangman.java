@@ -15,17 +15,25 @@ public class Hangman {
     private char[] hiddenWord;
     private char[] displayArray;
     private int lives = 3;
+    private Scanner inputScanner = new Scanner(System.in);
     public Hangman(){}
 
     public void runGame(){
-        boolean game_on = true;
+        boolean gameOn = true;
 
         initializeGameState();
         announceGame();
         displayArray = this.makeDisplayArray();
-        while(game_on) {
+
+        while(gameOn) {
             printCurrentState();
             char guess = getNextGuess();
+            process(guess);
+
+            // Check lives and update gameOn if needed
+            if(lives == 0){
+                gameOn = false;
+            }
         }
         if (!askToPlayAgain()) {
             gameOver();
@@ -47,13 +55,11 @@ public class Hangman {
         return guesses;
     }
 
-    static char getNextGuess() { // Modified from the sumOfInput to take a char instead of an int
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Enter a single character: ");
-        char character = scan.nextLine().charAt(0); // Gets first character from the input
-                                                    // while also consuming the newLine character
+    char getNextGuess() { // Modified from the sumOfInput to take a char instead of an int
 
-        scan.close();
+        System.out.print("Enter a single character: ");
+        String input = this.inputScanner.nextLine();
+        char character = input.charAt(0); // Gets the first character from the input
         return character;
     }
 
@@ -63,10 +69,16 @@ public class Hangman {
     private void gameOver(){
         System.out.println("Game Over.");
     }
-    private boolean isWordGuessed(){return false;}
+    private boolean isWordGuessed(){
+        for(int i: this.displayArray){
+            if(i == '_') {
+                return false;
+            }
+        }
+        return true;
+    }
     private boolean askToPlayAgain(){
         System.out.println("Would you like to play again? (yes/no)");
-        Scanner inputScanner = new Scanner(System.in);
         String answer = inputScanner.nextLine();
         // Returns true if answer == "yes"
         return answer.equalsIgnoreCase("yes");
@@ -74,6 +86,7 @@ public class Hangman {
     }
 
     private void printCurrentState(){
+        System.out.println("You have " + this.lives + " tries left.");
         for(char i: displayArray){  // For each loop
             System.out.print(i);
         }
@@ -83,16 +96,19 @@ public class Hangman {
     // loops through the word array, looking for the inputted guess, and
     // replaces the "_" with the guesses char if found
     private void process(char guess){
+        boolean found = false;
         for(int i = 0; i < this.hiddenWord.length; i++){
 
             // Check if guess == value at index
             if(this.hiddenWord[i] == guess){
                 this.displayArray[i] = guess;
+                found = true;
             }
-            // If not remove a life
-            else{
-                this.lives -= 1;
-            }
+        }
+
+        // Subtract a life if the guess wasn't found in the word
+        if (!found){
+            lives -= 1;
         }
     };
     private void playerWon(){
