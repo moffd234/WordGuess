@@ -19,8 +19,8 @@ public class Hangman {
         int randomIndex = (int) (Math.random() * 4);
         // Converts the word at the randomIndex to a list of chars and stores it in word
         char[] word = words[randomIndex].toCharArray();
-        System.out.println(hiddenWord);
-        return hiddenWord;
+        System.out.println(word);
+        return word;
     }
 
 }
