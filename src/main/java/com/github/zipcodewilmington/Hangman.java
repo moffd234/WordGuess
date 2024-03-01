@@ -124,6 +124,8 @@ public class Hangman {
         }
     }
     private void playerWon(){
+        System.out.println("**** ****");
+        printCurrentState();
         System.out.println("Congratulations, You Won!");
     }
     private void playerLoss(){
