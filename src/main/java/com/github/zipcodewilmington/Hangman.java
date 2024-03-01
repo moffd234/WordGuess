@@ -30,6 +30,10 @@ public class Hangman {
             while (gameOn) {
                 printCurrentState();
                 char guess = getNextGuess();
+                if(guess == '-'){
+                    replayFlag = false;
+                    break;
+                }
                 process(guess);
 
                 // Check lives and update gameOn if needed
@@ -42,7 +46,7 @@ public class Hangman {
                 }
             }
 
-            if (!askToPlayAgain()) {
+            if (replayFlag && !askToPlayAgain()) {
                 gameOver();
                 replayFlag = false;
             }
@@ -99,7 +103,7 @@ public class Hangman {
             System.out.print(i + " ");
         }
         System.out.println(); // Prints a new line once done with the for loop
-    };
+    }
 
     // loops through the word array, looking for the inputted guess, and
     // replaces the "_" with the guesses char if found
@@ -118,12 +122,14 @@ public class Hangman {
         if (!found){
             lives -= 1;
         }
-    };
+    }
     private void playerWon(){
         System.out.println("Congratulations, You Won!");
-    };
+    }
     private void playerLoss(){
+        System.out.println(":-( :-( :-(");
+        printCurrentState();
         System.out.println("You Lost! You ran out of guesses.");
-    };
+    }
 
 }
