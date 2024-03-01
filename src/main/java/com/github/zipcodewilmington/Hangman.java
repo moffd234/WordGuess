@@ -14,31 +14,39 @@ public class Hangman {
     final private String[] words = new String[]{"cat", "dog", "bog", "cut"};
     private char[] hiddenWord;
     private char[] displayArray;
-    private int lives = 3;
-    private Scanner inputScanner = new Scanner(System.in);
+    private int lives;
+    private final Scanner inputScanner = new Scanner(System.in);
     public Hangman(){}
 
     public void runGame(){
-        boolean gameOn = true;
+        boolean replayFlag = true; // Used to play the game again
+        while(replayFlag) {
+            boolean gameOn = true;
 
-        initializeGameState();
-        announceGame();
-        displayArray = this.makeDisplayArray();
+            initializeGameState();
+            announceGame();
+            displayArray = this.makeDisplayArray();
 
-        while(gameOn) {
-            printCurrentState();
-            char guess = getNextGuess();
-            process(guess);
+            while (gameOn) {
+                printCurrentState();
+                char guess = getNextGuess();
+                process(guess);
 
-            // Check lives and update gameOn if needed
-            if(lives == 0){
-                gameOn = false;
+                // Check lives and update gameOn if needed
+                if (lives == 0) {
+                    playerLoss();
+                    gameOn = false;
+                } else if (isWordGuessed()) {
+                    playerWon();
+                    gameOn = false;
+                }
+            }
+
+            if (!askToPlayAgain()) {
+                gameOver();
+                replayFlag = false;
             }
         }
-        if (!askToPlayAgain()) {
-            gameOver();
-        }
-
     }
 
     private void initializeGameState(){
@@ -46,7 +54,7 @@ public class Hangman {
         int randomIndex = (int) (Math.random() * 4);
         // Converts the word at the randomIndex to a list of chars and stores it in hiddenWord
         this.hiddenWord = words[randomIndex].toCharArray();
-        System.out.println(this.hiddenWord);
+        this.lives = 3;
     }
 
     private char[] makeDisplayArray(){
@@ -88,7 +96,7 @@ public class Hangman {
     private void printCurrentState(){
         System.out.println("You have " + this.lives + " tries left.");
         for(char i: displayArray){  // For each loop
-            System.out.print(i);
+            System.out.print(i + " ");
         }
         System.out.println(); // Prints a new line once done with the for loop
     };
